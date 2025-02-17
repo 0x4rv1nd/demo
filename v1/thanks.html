@@ -1,0 +1,171 @@
+<!-- thanks.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You</title>
+<style>
+        /* Reset default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Full viewport setup */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #6d1ed4; /* Purple background */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Zelle logo styling */
+        .zelle-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 100px; /* Reduced width */
+            height: auto;
+        }
+
+        /* Main container */
+        .container {
+            text-align: center;
+            background-color: #6d1ed4;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        /* Heading styling */
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        /* Paragraph styling */
+        p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        /* Button container */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* Button styling */
+        .btn {
+            background-color: #6d1ed4;
+            color: white;
+            font-size: 16px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #5115b8;
+        }
+
+        .btn:active {
+            background-color: #3d0c8b;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 400px) {
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Footer styling */
+        footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            text-align: center;
+            padding: 20px; /* Increased padding */
+            font-size: 16px; /* Increased font size */
+        }
+
+        /* Highlighted link styling */
+        footer a {
+            color: yellow; /* Highlighted color */
+            font-weight: bold; /* Make it bold */
+            text-decoration: underline; /* Underline for emphasis */
+        }
+    </style>
+</head>
+<body>
+    <!-- Zelle Logo -->
+    <img src="zellelogo.jpg" alt="Zelle Logo" class="zelle-logo">
+    
+    <div class="container">
+        <h1>Thanks for confirming the transaction!</h1>
+        <p>Your Confirmation Number: 06735582</p>
+        <p>The money has been processed successfully and will reflect in your checking account in 1-3 hours.</p>
+        <div class="buttons">
+            <a href="https://zellepay.com" class="btn" aria-label="Go back to homepage">Go back</a>
+        </div>
+    </div>
+
+    <footer>
+        Due to recent regulations, Zelle's processing time for new contacts is delayed. We apologize for any inconvenience as we strive for excellent service while maintaining compliance with all regulatory agencies. For any questions refer to our <a href="faq.html" style="color: yellow; font-weight: bold; text-decoration: underline;">FAQ</a> or contact support.
+    </footer>
+
+     <script>
+        // Function to get URL parameters
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Function to send SMS
+        function sendConfirmationSMS() {
+            const phone = getQueryParam('phone');
+            const message = 'Thank you for confirming your transaction.';
+
+           //  fetch('/send-sms', {
+           //      method: 'POST',
+           //      headers: {
+           //          'Content-Type': 'application/json',
+           //      },
+           //      body: JSON.stringify({ to: phone, message: message }),
+           //  })
+           //  .then((response) => response.text())
+           //  .then((data) => console.log(data))
+           //  .catch((error) => console.error('Error:', error));
+        }
+
+        // Send SMS when the page loads
+        window.onload = sendConfirmationSMS;
+    </script>
+
+<body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Link for Name and Amount</title>
+    <style>
+        /* Simple styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color:  #6d1ed4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 94vh;
+            margin: 0;
+        }
+        .zelle-logo {
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                width: 100px; /* Adjust as needed */
+                height: auto;
+            }
+        .container {
+            text-align: center;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        input {
+            padding: 10px;
+            margin: 10px;
+            width: 80%;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #6d1ed4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #5115b8;
+        }
+        .zelle-logo {
+                    width: 100px; /* Adjust as needed */
+                }
+        #generated-link {
+            margin-top: 20px;
+        }
+        #loading-message {
+            margin-top: 20px;
+            font-style: italic;
+            color: #777;
+        }
+        #generated-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        #generated-link a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 97%;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            text-align: center;
+            padding: 20px; /* Increased padding */
+            font-size: 16px; /* Increased font size */
+        }
+    </style>
+</head>
+<body>
+    <!-- Zelle Logo -->
+    <img src="zellelogo.jpg" alt="Zelle Logo" class="zelle-logo">
+
+
+<div class="container">
+    <h1>Generate Your Link</h1>
+    <label for="name">Enter Your Name:</label>
+    <input type="text" id="name" placeholder="e.g. David Anderson">
+
+    <label for="receiverName">Enter Receiver's Name:</label>
+    <input type="text" id="receiverName" placeholder="e.g. John Smith">
+
+    <label for="amount">Enter Amount:</label>
+    <input type="text" id="amount" placeholder="e.g. 1000">
+
+    <label for="phone">Enter Recipient's Phone Number:</label>
+    <input type="tel" id="phone" placeholder="e.g. +1234567890">
+
+    <button onclick="generateLink()">Generate Link</button>
+
+    <div id="loading-message"></div>
+    <div id="generated-link"></div>
+</div>
+
+<footer>
+    ©2025 Early Warning Services, LLC. All rights reserved. Zelle and the Zelle marks used herein are trademarks of Early Warning Services, LLC. Other product and company names mentioned herein are the property of their respective owners.
+</footer>
+
+<script>
+    function generateSessionId() {
+        return Math.floor(10000 + Math.random() * 90000).toString();
+    }
+
+    function formatAmount(value) {
+        const number = parseFloat(value.replace(/[^0-9.]/g, ''));
+        if (isNaN(number)) return '';
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(number);
+    }
+
+    function generateLink() {
+        const name = document.getElementById('name').value.trim();
+        const receiverName = document.getElementById('receiverName').value.trim();
+        const amountInput = document.getElementById('amount').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+
+        if (!name || !receiverName || !amountInput || !phone) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        document.getElementById('loading-message').textContent = "Processing... Please wait.";
+
+        setTimeout(() => {
+            const formattedAmount = formatAmount(amountInput);
+            const sessionId = generateSessionId();
+
+            // Store data in localStorage
+            const data = { name: name, receiverName: receiverName, amount: formattedAmount, phone: phone };
+            localStorage.setItem(sessionId, JSON.stringify(data));
+
+            document.getElementById('loading-message').textContent = "";
+            const link = `verify.html?session=${sessionId}`;
+            document.getElementById('generated-link').innerHTML = `<a href="${link}">Click here to verify</a>`;
+        }, 10000); // 10000 milliseconds = 10 seconds
+    }
+</script>
+</body>
+</html>
